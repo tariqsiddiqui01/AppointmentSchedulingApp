@@ -1,17 +1,17 @@
 {
   "format": 1,
   "restore": {
-    "D:\\Udemy\\AppointmentSchedulingApp\\AppointmentSchedulingApp.csproj": {}
+    "d:\\Udemy\\AppointmentSchedulingApp\\AppointmentSchedulingApp.csproj": {}
   },
   "projects": {
-    "D:\\Udemy\\AppointmentSchedulingApp\\AppointmentSchedulingApp.csproj": {
+    "d:\\Udemy\\AppointmentSchedulingApp\\AppointmentSchedulingApp.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "D:\\Udemy\\AppointmentSchedulingApp\\AppointmentSchedulingApp.csproj",
+        "projectUniqueName": "d:\\Udemy\\AppointmentSchedulingApp\\AppointmentSchedulingApp.csproj",
         "projectName": "AppointmentSchedulingApp",
-        "projectPath": "D:\\Udemy\\AppointmentSchedulingApp\\AppointmentSchedulingApp.csproj",
+        "projectPath": "d:\\Udemy\\AppointmentSchedulingApp\\AppointmentSchedulingApp.csproj",
         "packagesPath": "C:\\Users\\Lenovo\\.nuget\\packages\\",
-        "outputPath": "D:\\Udemy\\AppointmentSchedulingApp\\obj\\",
+        "outputPath": "d:\\Udemy\\AppointmentSchedulingApp\\obj\\",
         "projectStyle": "PackageReference",
         "configFilePaths": [
           "C:\\Users\\Lenovo\\AppData\\Roaming\\NuGet\\NuGet.Config"
@@ -37,6 +37,16 @@
       "frameworks": {
         "net5.0": {
           "targetAlias": "net5.0",
+          "dependencies": {
+            "Microsoft.AspNetCore.Identity.EntityFrameworkCore": {
+              "target": "Package",
+              "version": "[5.0.0, )"
+            },
+            "Microsoft.EntityFrameworkCore.SqlServer": {
+              "target": "Package",
+              "version": "[5.0.0, )"
+            }
+          },
           "imports": [
             "net461",
             "net462",
