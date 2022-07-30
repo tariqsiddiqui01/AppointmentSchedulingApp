@@ -16,7 +16,7 @@ namespace AppointmentSchedulingApp.Controllers
         RoleManager<IdentityRole> _roleManager;
 
 
-        public AccountController(ApplicationDbContext db, UserManager<ApplicationUser> userManager, 
+        public AccountController(ApplicationDbContext db, UserManager<ApplicationUser> userManager,
         SignInManager<ApplicationUser> signInManager, RoleManager<IdentityRole> roleManager)
         {
             _db = db;
@@ -30,39 +30,68 @@ namespace AppointmentSchedulingApp.Controllers
             return View();
         }
 
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> Login(LoginVM model)
+        {
+            if (ModelState.IsValid)
+            {
+                var result = await _signInManager.PasswordSignInAsync(model.Email, model.Password, model.RememberMe, false);
+                if (result.Succeeded)
+                {
+                    return RedirectToAction("Index", "Home");
+                }
+                ModelState.AddModelError("", "Invalid Login details");
+            }
+            return View(model);
+        }
+
         public async Task<IActionResult> Register()
         {
-            if(!_roleManager.RoleExistsAsync(Helper.Admin).GetAwaiter().GetResult()){
-                 await _roleManager.CreateAsync(new IdentityRole(Helper.Admin));
-                 await _roleManager.CreateAsync(new IdentityRole(Helper.Doctor));
-                 await _roleManager.CreateAsync(new IdentityRole(Helper.Patient));
-                
-
+            if (!_roleManager.RoleExistsAsync(Helper.Admin).GetAwaiter().GetResult())
+            {
+                await _roleManager.CreateAsync(new IdentityRole(Helper.Admin));
+                await _roleManager.CreateAsync(new IdentityRole(Helper.Doctor));
+                await _roleManager.CreateAsync(new IdentityRole(Helper.Patient));
             }
             return View();
         }
-        
+
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Register(RegisterVM model)
         {
-            if(ModelState.IsValid){
-               
-               var user = new ApplicationUser{
-                   UserName = model.Email,
-                   Email = model.Email,
-                   Name = model.Name
-               };
-               var result = await _userManager.CreateAsync(user);
-               if(result.Succeeded){
-                   await _userManager.AddToRoleAsync(user, model.RoleName);
-                   await _signInManager.SignInAsync(user, isPersistent: false);
-                   return RedirectToAction("Index", "Home");
-               }
+            if (ModelState.IsValid)
+            {
+
+                var user = new ApplicationUser
+                {
+                    UserName = model.Email,
+                    Email = model.Email,
+                    Name = model.Name
+                };
+                var result = await _userManager.CreateAsync(user, model.Password);
+                if (result.Succeeded)
+                {
+                    await _userManager.AddToRoleAsync(user, model.RoleName);
+                    await _signInManager.SignInAsync(user, isPersistent: false);
+                    return RedirectToAction("Index", "Home");
+                }
+                foreach (var err in result.Errors)
+                {
+                    ModelState.AddModelError("", err.Description);
+                }
 
             }
 
-            return View();
+            return View(model);
         }
+
+        [HttpPost]
+        public async Task<IActionResult> LogOff()
+        {
+            await _signInManager.SignOutAsync();
+            return RedirectToAction("Login", "Account");
+    }
     }
 }
