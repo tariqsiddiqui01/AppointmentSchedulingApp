@@ -30,7 +30,7 @@ namespace AppointmentSchedulingApp
             services.AddControllersWithViews();
 
             
-            services.AddIdentity<IdentityUser, IdentityRole>().AddEntityFrameworkStores<ApplicationDbContext>();
+            services.AddIdentity<ApplicationUser, IdentityRole>().AddEntityFrameworkStores<ApplicationDbContext>();
             services.AddRazorPages().AddRazorRuntimeCompilation();
         }
 
